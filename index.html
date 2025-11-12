@@ -4,20 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles.css" />
-    <script src="/src/app.ts" defer></script>
+    <script src="/src/app.ts" defer type="module"></script>
     <title>toy-shop</title>
   </head>
   <body>
     <header>
-      <nav>
-        <ul>
-          <li class="nav-item nav-item-home"><a href="/">🏠 Home</a></li>
-          <li class="nav-item nav-item-products">
-            <a href="/products">💸 Products</a>
-          </li>
-          <li class="nav-item nav-item-cart"><a href="/cart">🛒 Cart</a></li>
-        </ul>
-      </nav>
+      <app-nav></app-nav>
     </header>
     <main>
       <div id="app">hello</div>

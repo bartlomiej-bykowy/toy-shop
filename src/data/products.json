@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Tap Water™",
+    "desc": "Sourced directly from the municipal cloud infrastructure. Enriched with trace elements of nostalgia and bureaucracy. 100% middleware-free.",
+    "img": "/src/data/images/tap-water.webp",
+    "price": 2
+  },
+  {
+    "id": 2,
+    "name": "Glacier Premium",
+    "desc": "Naturally filtered through 10,000 years of ice and corporate rebranding. Harvested once per century from the slowest melting glaciers available.",
+    "img": "/src/data/images/glacier-premium.webp",
+    "price": 12
+  },
+  {
+    "id": 3,
+    "name": "Rain Beta",
+    "desc": "Distilled by the sky itself - early access edition. May contain experimental droplets and traces of bird-related dependencies.",
+    "img": "/src/data/images/rain-beta.webp",
+    "price": 5
+  },
+  {
+    "id": 4,
+    "name": "Sea Water Pro Max",
+    "desc": "Engineered for the bold. Now 30% saltier for maximum flavor density. Fully compatible with pasta, tears, and dramatic cooking sessions.",
+    "img": "/src/data/images/sea-water-pro-max.webp",
+    "price": 7
+  },
+  {
+    "id": 5,
+    "name": "Mystic Well Limited",
+    "desc": "Drawn from an undisclosed underground source of questionable reality. Grants +5 Aura, +10 Curiosity, and mild existential awareness.",
+    "img": "/src/data/images/mystic-well-limited.webp",
+    "price": 15
+  },
+  {
+    "id": 6,
+    "name": "Sparkling Connection",
+    "desc": "Bubbly hydration infused with next-gen connectivity ions. Refreshing, fast, and always buffering in the right direction.",
+    "img": "/src/data/images/sparkling-connection.webp",
+    "price": 9
+  }
+]

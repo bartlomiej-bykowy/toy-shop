@@ -36,7 +36,7 @@ export class ProductsPage extends HTMLElement {
       clone.querySelector(".product-name")!.textContent = product.name;
       clone.querySelector(
         ".product-price"
-      )!.textContent = `Price: ${product.price}$`;
+      )!.textContent = `Price: $${product.price}`;
 
       clone
         .querySelector<HTMLButtonElement>(".add-btn")!

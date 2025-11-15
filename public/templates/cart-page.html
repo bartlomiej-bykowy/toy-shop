@@ -1,0 +1,34 @@
+<div id="cart-page">
+  <h1>Your Cart</h1>
+
+  <div id="cart-empty" hidden>
+    <p>The cart is empty. <a href="/products">Check out our products.</a></p>
+  </div>
+
+  <div id="cart-layout">
+    <!-- Left: items -->
+    <div id="cart-items"></div>
+
+    <!-- Right: summary -->
+    <div id="cart-summary">
+      <h2>Order Summary</h2>
+      <p class="label">Total price:</p>
+      <p id="cart-total">$0</p>
+      <button id="buy-btn">Buy</button>
+    </div>
+  </div>
+
+  <!-- Template for a cart item -->
+  <template id="cart-item-template">
+    <div class="cart-item">
+      <img class="item-img" src="" alt="" />
+
+      <div class="item-info">
+        <p class="item-name"></p>
+        <p class="item-price"></p>
+      </div>
+
+      <button class="remove-btn">Remove</button>
+    </div>
+  </template>
+</div>

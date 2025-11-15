@@ -34,7 +34,7 @@ export class ProductDetailsPage extends HTMLElement {
       currentProduct.desc;
     this.root!.querySelector(
       "#product-price"
-    )!.textContent = `Price: ${currentProduct.price}$`;
+    )!.textContent = `Price: $${currentProduct.price}`;
   }
 }
 

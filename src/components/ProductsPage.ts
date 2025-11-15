@@ -1,33 +1,17 @@
+import { loadProducts } from "../utils/loadProducts";
 import { loadTemplate } from "../utils/renderTemplate";
-
-type Product = {
-  id: number;
-  name: string;
-  desc: string;
-  img: string;
-  price: number;
-};
 
 export class ProductsPage extends HTMLElement {
   root: ShadowRoot;
-  products: Product[];
 
   constructor() {
     super();
-
-    this.products = [];
 
     this.root = this.attachShadow({ mode: "open" });
   }
 
   connectedCallback() {
     this.render();
-  }
-
-  async loadProducts(): Promise<Product[]> {
-    const data = await fetch("/src/data/products.json");
-    const products: Product[] = await data.json();
-    return products;
   }
 
   async render() {
@@ -38,15 +22,13 @@ export class ProductsPage extends HTMLElement {
     const productsGrid = this.root!.querySelector("#products-grid")!;
     productsGrid.append("Loading...");
 
-    this.products = await this.loadProducts();
+    const products = await loadProducts();
 
     const itemTemplate = this.root!.querySelector<HTMLTemplateElement>(
       "#product-item-template"
     )!;
 
-    console.log(itemTemplate);
-
-    const cells: Node[] = this.products.map((product) => {
+    const cells: Node[] = products.map((product) => {
       const clone = itemTemplate.content.cloneNode(true) as DocumentFragment;
       clone.querySelector("a")!.href = `/products/${product.id}`;
       clone.querySelector("img")!.src = product.img;

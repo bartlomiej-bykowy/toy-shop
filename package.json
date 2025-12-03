@@ -11,5 +11,9 @@
   "devDependencies": {
     "typescript": "~5.9.3",
     "vite": "^7.1.7"
+  },
+  "dependencies": {
+    "@bartlomiej-bykowy/toy-router": "^1.0.2",
+    "@bartlomiej-bykowy/toy-store": "^1.0.1"
   }
 }

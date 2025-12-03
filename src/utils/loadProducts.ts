@@ -1,13 +1,7 @@
-export type Product = {
-  id: number;
-  name: string;
-  desc: string;
-  img: string;
-  price: number;
-};
+import { productsStore, type Product } from "../store";
 
-export async function loadProducts(): Promise<Product[]> {
+export async function loadProducts(): Promise<void> {
   const data = await fetch("/src/data/products.json");
   const products: Product[] = await data.json();
-  return products;
+  productsStore.loadProducts(products);
 }

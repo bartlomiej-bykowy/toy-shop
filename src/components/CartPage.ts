@@ -1,13 +1,12 @@
-import { loadProducts, type Product } from "../utils/loadProducts";
+import { router } from "../app";
+import { productsStore } from "../store";
 import { loadTemplate } from "../utils/renderTemplate";
 
 export class CartPage extends HTMLElement {
   root: ShadowRoot;
-  cartItems: Product[];
 
   constructor() {
     super();
-    this.cartItems = [];
 
     this.root = this.attachShadow({ mode: "open" });
   }
@@ -20,9 +19,6 @@ export class CartPage extends HTMLElement {
     const termplate = await loadTemplate("cart-page");
     this.root.replaceChildren(termplate);
 
-    // TODO: load items from store
-    this.cartItems = await this.loadCart();
-
     const emptyCart = this.root.querySelector("#cart-empty")!;
     const listEl = this.root.querySelector("#cart-items")!;
     const cartSummary =
@@ -32,7 +28,9 @@ export class CartPage extends HTMLElement {
       "#cart-item-template"
     )!;
 
-    if (this.cartItems.length === 0) {
+    const productsInCart = productsStore.$state.cart;
+
+    if (productsInCart.length === 0) {
       emptyCart.removeAttribute("hidden");
       cartSummary.style.display = "none";
       return;
@@ -41,7 +39,7 @@ export class CartPage extends HTMLElement {
     emptyCart.setAttribute("hidden", "");
     cartSummary.style.display = "flex";
 
-    const items = this.cartItems.map((item) => {
+    const items = productsInCart.map((item) => {
       const fragment = itemTemplate.content.cloneNode(true) as DocumentFragment;
 
       fragment.querySelector<HTMLImageElement>(".item-img")!.src = item.img;
@@ -49,7 +47,8 @@ export class CartPage extends HTMLElement {
       fragment.querySelector(".item-price")!.textContent = `$${item.price}`;
 
       fragment.querySelector(".remove-btn")!.addEventListener("click", () => {
-        this.removeFromCart(item.id);
+        productsStore.removeFromCart(item.id);
+        this.render();
       });
 
       return fragment;
@@ -57,22 +56,21 @@ export class CartPage extends HTMLElement {
 
     listEl.replaceChildren(...items);
 
-    const total = this.cartItems.reduce((sum, item) => sum + item.price, 0);
+    const total = productsStore.$state.cart.reduce(
+      (sum, item) => sum + item.price,
+      0
+    );
     totalEl.textContent = `$${total}`;
 
     this.root.querySelector("#buy-btn")!.addEventListener("click", () => {
       alert("Thank you for buing our products!");
-      this.cartItems = [];
-      // TODO: navigate to the home page
+      productsStore.clearCart();
+      router.navigate("/");
     });
   }
 
-  async loadCart(): Promise<Product[]> {
-    return await loadProducts();
-  }
-
   removeFromCart(itemId: number): void {
-    this.cartItems = this.cartItems.filter((item) => item.id !== itemId);
+    productsStore.removeFromCart(itemId);
     this.render();
   }
 }

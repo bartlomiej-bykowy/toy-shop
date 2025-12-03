@@ -1,14 +1,12 @@
-import { loadProducts } from "../utils/loadProducts";
+import { router } from "../app";
+import { productsStore } from "../store";
 import { loadTemplate } from "../utils/renderTemplate";
 
 export class ProductDetailsPage extends HTMLElement {
   root: ShadowRoot;
-  productId: number;
 
   constructor() {
     super();
-
-    this.productId = 1;
 
     this.root = this.attachShadow({ mode: "open" });
   }
@@ -21,8 +19,9 @@ export class ProductDetailsPage extends HTMLElement {
     const template = await loadTemplate("product-details-page");
     this.root!.appendChild(template);
 
-    const products = await loadProducts();
-    const currentProduct = products.find((prd) => prd.id === this.productId);
+    const { products } = productsStore.$state;
+    const productId = Number(router.params().params.id);
+    const currentProduct = products.find((prd) => prd.id === productId);
 
     if (!currentProduct) return;
 
@@ -35,6 +34,9 @@ export class ProductDetailsPage extends HTMLElement {
     this.root!.querySelector(
       "#product-price"
     )!.textContent = `Price: $${currentProduct.price}`;
+    this.root!.querySelector("#add-to-cart")!.addEventListener("click", () =>
+      productsStore.addToCart([currentProduct])
+    );
   }
 }
 

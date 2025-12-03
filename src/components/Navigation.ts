@@ -1,3 +1,4 @@
+import { productsStore } from "../store";
 import { loadTemplate } from "../utils/renderTemplate";
 
 type NavLink = { text: string; icon: string };
@@ -5,6 +6,7 @@ type NavLink = { text: string; icon: string };
 export class Navigation extends HTMLElement {
   links: NavLink[];
   root: ShadowRoot;
+  unsubscribe: null | (() => void);
 
   constructor() {
     super();
@@ -24,11 +26,28 @@ export class Navigation extends HTMLElement {
       },
     ];
 
+    this.unsubscribe = null;
+
     this.root = this.attachShadow({ mode: "open" });
   }
 
-  connectedCallback() {
-    this.render();
+  async connectedCallback() {
+    await this.render();
+
+    const cartCountEl = this.root.querySelector(".cart-count");
+
+    this.unsubscribe = productsStore.$subscribeKey("cart", (_, newVal) => {
+      cartCountEl!.textContent = String(productsStore.productsInCart);
+      if (newVal.length > 0) {
+        cartCountEl?.classList.remove("cart-count-hidden");
+      } else {
+        cartCountEl?.classList.add("cart-count-hidden");
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    this.unsubscribe!();
   }
 
   async render() {
@@ -49,8 +68,24 @@ export class Navigation extends HTMLElement {
 
   renderNavElement(el: NavLink): string {
     const { text, icon } = el;
-    const lowerText = text.toLocaleLowerCase();
-    return `<li class="nav-item nav-item-${lowerText}"><a href="/${lowerText}">${icon} ${text}</a></li>`;
+    const lower = text.toLowerCase();
+
+    if (lower === "cart") {
+      return `
+        <li class="nav-item nav-item-cart">
+          <a href="/cart">${icon} ${text}</a>
+          <span class="cart-count cart-count-hidden"></span>
+        </li>
+      `;
+    }
+
+    return `
+      <li class="nav-item nav-item-${lower}">
+        <a href="/${lower === "home" ? "" : lower}">
+          ${icon} ${text}
+        </a>
+      </li>
+  `;
   }
 }
 

@@ -21,3 +21,5 @@ export class HomePage extends HTMLElement {
 }
 
 customElements.define("app-home-page", HomePage);
+
+export default "app-home-page";

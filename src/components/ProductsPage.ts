@@ -1,4 +1,4 @@
-import { loadProducts } from "../utils/loadProducts";
+import { productsStore, type Product } from "../store";
 import { loadTemplate } from "../utils/renderTemplate";
 
 export class ProductsPage extends HTMLElement {
@@ -22,13 +22,13 @@ export class ProductsPage extends HTMLElement {
     const productsGrid = this.root!.querySelector("#products-grid")!;
     productsGrid.append("Loading...");
 
-    const products = await loadProducts();
+    const { products } = productsStore.$state;
 
     const itemTemplate = this.root!.querySelector<HTMLTemplateElement>(
       "#product-item-template"
     )!;
 
-    const cells: Node[] = products.map((product) => {
+    const cells: Node[] = products.map((product: Product) => {
       const clone = itemTemplate.content.cloneNode(true) as DocumentFragment;
       clone.querySelector("a")!.href = `/products/${product.id}`;
       clone.querySelector("img")!.src = product.img;
@@ -42,7 +42,8 @@ export class ProductsPage extends HTMLElement {
         .querySelector<HTMLButtonElement>(".add-btn")!
         .addEventListener("click", (e: MouseEvent) => {
           e.stopPropagation();
-          console.log(`${product.name} added to cart.`);
+          e.preventDefault();
+          productsStore.addToCart([product]);
         });
 
       return clone;

@@ -63,7 +63,7 @@ export class CartPage extends HTMLElement {
     totalEl.textContent = `$${total}`;
 
     this.root.querySelector("#buy-btn")!.addEventListener("click", () => {
-      alert("Thank you for buing our products!");
+      alert("Thank you for buiyng our products!");
       productsStore.clearCart();
       router.navigate("/");
     });

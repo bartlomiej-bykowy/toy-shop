@@ -1,4 +1,4 @@
-import { router } from "../app";
+import { router } from "../router";
 import { productsStore } from "../store";
 import { loadTemplate } from "../utils/renderTemplate";
 
@@ -46,10 +46,9 @@ export class CartPage extends HTMLElement {
       fragment.querySelector(".item-name")!.textContent = item.name;
       fragment.querySelector(".item-price")!.textContent = `$${item.price}`;
 
-      fragment.querySelector(".remove-btn")!.addEventListener("click", () => {
-        productsStore.removeFromCart(item.id);
-        this.render();
-      });
+      fragment
+        .querySelector(".remove-btn")!
+        .addEventListener("click", () => this.removeFromCart(item.cartId));
 
       return fragment;
     });
@@ -69,7 +68,7 @@ export class CartPage extends HTMLElement {
     });
   }
 
-  removeFromCart(itemId: number): void {
+  removeFromCart(itemId: string): void {
     productsStore.removeFromCart(itemId);
     this.render();
   }

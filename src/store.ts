@@ -7,14 +7,17 @@ export type Product = {
   img: string;
   price: number;
 };
-type ProductsState = { products: Product[]; cart: Product[] };
+export type CartProduct = Product & {
+  cartId: string;
+};
+type ProductsState = { products: Product[]; cart: CartProduct[] };
 type Getters<S> = {
   productsInCart: (state: S) => number;
 };
 type Actions = {
   loadProducts: (products: Product[]) => void;
   addToCart: (products: Product[]) => void;
-  removeFromCart: (id: number) => Product[];
+  removeFromCart: (id: string) => CartProduct[];
   clearCart: () => void;
 };
 
@@ -36,10 +39,17 @@ const useProductsStore = defineStore<
       this.$state.products = products;
     },
     addToCart(products: Product[]) {
-      this.$state.cart = [...this.$state.cart, ...products];
+      // we need to add some unique identifier for every item in the cart. Otherwise we could end up with multiple same items (with the same id) and removing one would remove all of them
+      const productsWithCartId = products.map((product) => ({
+        cartId: crypto.randomUUID(),
+        ...product,
+      }));
+      this.$state.cart = [...this.$state.cart, ...productsWithCartId];
     },
-    removeFromCart(id: number) {
-      const newCart = this.$state.cart.filter((product) => product.id !== id);
+    removeFromCart(id: string) {
+      const newCart = this.$state.cart.filter(
+        (product) => product.cartId !== id
+      );
       this.$state.cart = newCart;
       return newCart;
     },

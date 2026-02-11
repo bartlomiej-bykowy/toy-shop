@@ -1,4 +1,4 @@
-import { router } from "../app";
+import { router } from "../router";
 import { productsStore } from "../store";
 import { loadTemplate } from "../utils/renderTemplate";
 

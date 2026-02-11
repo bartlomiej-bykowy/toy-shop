@@ -1,3 +1,4 @@
+import { router } from "../router";
 import { productsStore } from "../store";
 import { loadTemplate } from "../utils/renderTemplate";
 
@@ -34,6 +35,8 @@ export class Navigation extends HTMLElement {
   async connectedCallback() {
     await this.render();
 
+    this.markNavLinkActive(router.url().pathname);
+
     const cartCountEl = this.root.querySelector(".cart-count");
 
     this.unsubscribe = productsStore.$subscribeKey("cart", (_, newVal) => {
@@ -43,6 +46,11 @@ export class Navigation extends HTMLElement {
       } else {
         cartCountEl?.classList.add("cart-count-hidden");
       }
+    });
+
+    router.onRouteChange((ctx) => {
+      const { pathname } = ctx;
+      this.markNavLinkActive(pathname);
     });
   }
 
@@ -86,6 +94,18 @@ export class Navigation extends HTMLElement {
         </a>
       </li>
   `;
+  }
+
+  markNavLinkActive(pathname: string) {
+    this.root.querySelector(".nav-item.active")?.classList.remove("active");
+    if (pathname.includes("cart")) {
+      this.root.querySelector(".nav-item-cart")?.classList.add("active");
+    } else if (pathname.includes("products")) {
+      console.log("products");
+      this.root.querySelector(".nav-item-products")?.classList.add("active");
+    } else {
+      this.root.querySelector(".nav-item-home")?.classList.add("active");
+    }
   }
 }
 
